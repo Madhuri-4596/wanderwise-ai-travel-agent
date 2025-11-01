@@ -63,7 +63,7 @@ export default function TripItinerary({ trip }: Props) {
                   </div>
                   <div className="flex justify-between text-sm text-indigo-700 mb-4">
                     <span>{flight.duration}</span>
-                    <span>{flight.stops === 0 ? 'Direct' : `${flight.stops} stop${flight.stops > 1 ? 's' : ''}`}</span>
+                    <span>{(flight.stops ?? 0) === 0 ? 'Direct' : `${flight.stops} stop${(flight.stops ?? 0) > 1 ? 's' : ''}`}</span>
                   </div>
                   {flight.bookingLink && (
                     <a
