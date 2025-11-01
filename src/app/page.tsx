@@ -1,21 +1,21 @@
 import Link from 'next/link';
 
 const features = [
-  { id: 'flights', icon: '✈️', title: 'Flights', desc: 'Find and book flights', gradient: 'from-indigo-600 to-purple-600' },
-  { id: 'hotels', icon: '🏨', title: 'Hotels', desc: 'Discover cozy stays', gradient: 'from-violet-600 to-fuchsia-600' },
-  { id: 'rides', icon: '🚗', title: 'Rides', desc: 'Car & bike rentals', gradient: 'from-emerald-600 to-teal-600' },
-  { id: 'nearby', icon: '📍', title: 'Nearby Spots', desc: 'Cafes, views, secret places', gradient: 'from-orange-600 to-red-600' },
-  { id: 'ai-agent', icon: '🤖', title: 'AI Travel Agent', desc: 'Chat to plan trips', gradient: 'from-pink-600 to-rose-600' },
-  { id: 'my-trips', icon: '🧳', title: 'My Trips', desc: 'Saved plans & itineraries', gradient: 'from-cyan-600 to-blue-600' },
+  { id: 'flights', icon: '✈️', title: 'Flights', desc: 'Find and book flights' },
+  { id: 'hotels', icon: '🏨', title: 'Hotels', desc: 'Discover cozy stays' },
+  { id: 'rides', icon: '🚗', title: 'Rides', desc: 'Car & bike rentals' },
+  { id: 'nearby', icon: '📍', title: 'Nearby Spots', desc: 'Cafes, views, secret places' },
+  { id: 'ai-agent', icon: '🤖', title: 'AI Travel Agent', desc: 'Chat to plan trips' },
+  { id: 'my-trips', icon: '🧳', title: 'My Trips', desc: 'Saved plans & itineraries' },
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 py-16">
-      <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-3xl shadow-2xl w-[800px] p-10 border border-slate-700/50">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16 px-4">
+      <div className="bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-5xl p-8 md:p-12 border border-slate-700/50">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">
+        <div className="mb-6 text-center md:text-left">
+          <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 mb-2">
             Wonderlust
           </h1>
           <p className="text-slate-400 text-sm">Multi-Agent AI Travel Assistant</p>
@@ -26,30 +26,29 @@ export default function Home() {
           <span className="text-slate-400 text-sm">Choose your travel assistant to get started</span>
         </p>
 
-        {/* Grid Section - 3 columns, 2 rows */}
-        <div className="grid grid-cols-3 gap-5">
-          {features.map((item, index) => (
+        {/* Services Grid - CSS Grid with 3 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {features.map((item) => (
             <Link
               key={item.id}
               href={`/chat/${item.id}`}
-              className="group relative bg-gradient-to-br from-slate-700/50 to-slate-800/50 hover:from-slate-700/80 hover:to-slate-800/80 rounded-2xl p-6 flex flex-col items-center justify-center shadow-lg hover:shadow-2xl cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-1 border border-slate-600/30 hover:border-slate-500/50 overflow-hidden"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="service-card group relative bg-gradient-to-br from-slate-700/40 to-slate-800/40 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 ease-out border-2 border-transparent hover:border-purple-500/50 overflow-hidden"
             >
-              {/* Shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              {/* Shine effect on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
 
-              {/* Icon in gradient box */}
-              <div className={`bg-gradient-to-br ${item.gradient} text-white text-3xl p-4 rounded-xl mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                {item.icon}
+              {/* Icon Box - 80x80px with dark gradient */}
+              <div className="service-icon w-20 h-20 mx-auto mb-5 bg-gradient-to-br from-slate-900 to-slate-700 rounded-2xl flex items-center justify-center shadow-xl group-hover:shadow-purple-500/30 transition-shadow duration-300">
+                <span className="text-4xl">{item.icon}</span>
               </div>
 
               {/* Title */}
-              <h2 className="font-bold text-white mb-1 text-center">
+              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors duration-300">
                 {item.title}
-              </h2>
+              </h3>
 
               {/* Description */}
-              <p className="text-slate-400 text-xs text-center leading-tight">
+              <p className="text-slate-400 text-sm leading-relaxed">
                 {item.desc}
               </p>
             </Link>
@@ -61,6 +60,17 @@ export default function Home() {
           Powered by AI • Built for dreamers • Made with 💜
         </p>
       </div>
+
+      {/* CSS for hover lift effect */}
+      <style jsx>{`
+        .service-card {
+          transform: translateY(0);
+        }
+        .service-card:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 15px 40px rgba(168, 85, 247, 0.4);
+        }
+      `}</style>
     </main>
   );
 }
