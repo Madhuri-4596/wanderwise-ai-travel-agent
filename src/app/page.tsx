@@ -1,6 +1,7 @@
 import GridMenu from '@/components/layouts/GridMenu';
 
 export default function Home() {
+  // Build timestamp: 2025-11-01T07:27:30Z - Force cache invalidation
   return (
     <main className="min-h-screen relative overflow-hidden py-16">
       {/* Golden Sparkle Dust Particles */}
