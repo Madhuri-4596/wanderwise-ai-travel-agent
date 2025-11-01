@@ -18,22 +18,22 @@ export default function Home() {
         <div className="absolute -bottom-20 left-1/2 w-96 h-96 bg-gradient-to-br from-cream/40 to-butter/20 rounded-full blur-3xl animate-blob delay-1000"></div>
       </div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 max-w-6xl">
         {/* Hero Section */}
-        <div className="text-center max-w-4xl mx-auto mb-16 animate-fade-in-up sunrise-animation">
-          <div className="mb-6 animate-float">
-            <span className="text-7xl">☀️</span>
+        <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up sunrise-animation">
+          <div className="mb-4 animate-float">
+            <span className="text-6xl">☀️</span>
           </div>
 
-          <h1 className="text-7xl md:text-8xl font-black mb-4 gradient-text drop-shadow-2xl">
+          <h1 className="text-6xl md:text-7xl font-black mb-3 gradient-text drop-shadow-2xl">
             Wonderlust
           </h1>
 
-          <p className="text-2xl font-semibold text-charcoal mb-4">
+          <p className="text-xl font-semibold text-charcoal mb-2">
             your AI bestie for dream trips 💛
           </p>
 
-          <p className="text-lg text-charcoal-light mb-8 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base text-charcoal-light leading-relaxed">
             Choose your travel assistant to get started ✨
           </p>
         </div>
@@ -42,7 +42,7 @@ export default function Home() {
         <IconGrid />
 
         {/* Bottom CTA */}
-        <div className="text-center mt-20 animate-fade-in-up delay-500">
+        <div className="text-center mt-16 animate-fade-in-up delay-500">
           <p className="text-sm text-charcoal-light">
             Powered by AI • Built for dreamers • Made with 💛
           </p>

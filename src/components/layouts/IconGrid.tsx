@@ -20,22 +20,25 @@ const agents: Agent[] = [
 
 export default function IconGrid() {
   return (
-    <div className="grid grid-cols-3 gap-8 max-w-4xl mx-auto px-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto px-4">
       {agents.map((agent, index) => (
         <Link
           key={agent.id}
           href={`/chat/${agent.id}`}
           className="
-            glass-strong
-            p-10
-            rounded-3xl
-            shadow-warm
-            hover:shadow-2xl
+            bg-white/90
+            backdrop-blur-md
+            rounded-xl
+            p-6
+            shadow-md
+            hover:shadow-xl
+            border
+            border-butter/20
+            hover:border-glow/40
             transition-all
-            duration-300
-            transform
-            hover:-translate-y-3
-            hover:scale-110
+            duration-200
+            hover:scale-105
+            hover:bg-white
             animate-fade-in-up
             flex
             flex-col
@@ -43,16 +46,22 @@ export default function IconGrid() {
             text-center
             group
             cursor-pointer
+            min-h-[160px]
           "
-          style={{ animationDelay: `${index * 0.1}s` }}
+          style={{ animationDelay: `${index * 0.08}s` }}
         >
-          <div className="text-6xl mb-3 transform group-hover:scale-125 transition-transform duration-300 group-hover:animate-bounce-soft">
+          {/* Icon */}
+          <div className="text-5xl mb-3 transform group-hover:scale-110 transition-transform duration-200">
             {agent.icon}
           </div>
-          <h3 className="text-lg font-bold text-charcoal mb-1 group-hover:text-glow transition-colors">
+
+          {/* Title */}
+          <h3 className="text-lg font-semibold text-charcoal mb-1 group-hover:text-glow transition-colors">
             {agent.label}
           </h3>
-          <p className="text-xs text-charcoal-light group-hover:text-charcoal transition-colors">
+
+          {/* Description */}
+          <p className="text-sm text-charcoal-light leading-snug">
             {agent.description}
           </p>
         </Link>
