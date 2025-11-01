@@ -58,7 +58,7 @@ h1, h2, h3 {
 
 /* Custom scrollbar - Buttery */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -74,6 +74,24 @@ h1, h2, h3 {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #FFD76E, #FBE79B);
+}
+
+/* Compact scrollbar for chat boxes */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(251, 231, 155, 0.4);
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 231, 155, 0.6);
 }
 
 /* ========== WONDERLUST BUTTER ANIMATIONS ========== */
