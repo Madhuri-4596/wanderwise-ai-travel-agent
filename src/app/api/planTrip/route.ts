@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { ChatRequest } from '@/types';
 
-// Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization of OpenAI client
+function getOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -60,6 +62,7 @@ Keep responses conversational but structured. Use emojis sparingly for visual ap
     ];
 
     // Call OpenAI API
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini', // Using cost-effective model; upgrade to gpt-4o for better quality
       messages: messages,
