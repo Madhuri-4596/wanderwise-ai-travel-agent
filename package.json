@@ -1,0 +1,38 @@
+{
+  "name": "wanderwise",
+  "version": "1.0.0",
+  "description": "WanderWise - AI-powered trip planning. Wander smart, travel wise.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [
+    "ai",
+    "travel",
+    "trip-planner",
+    "wanderwise",
+    "itinerary"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.16",
+    "@types/node": "^24.9.2",
+    "@types/react": "^19.2.2",
+    "autoprefixer": "^10.4.21",
+    "next": "^16.0.1",
+    "openai": "^6.7.0",
+    "postcss": "^8.5.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.16",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.0",
+    "eslint-config-next": "^16.0.1"
+  }
+}
