@@ -3,93 +3,187 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #1e1b4b;
-  --electric-cyan: #00E5FF;
-  --deep-indigo: #3730A3;
-  --coral: #FF6B6B;
+  --butter: #FBE79B;
+  --cream: #FFF8E7;
+  --glow: #FFE18C;
+  --textsoft: #3C3C3C;
+  --textlight: #6B6B6B;
+  --pure-white: #FFFFFF;
+  --warm-shadow: #F5E6D3;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: linear-gradient(180deg, #FFF8E7 0%, #FBE79B 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  color: var(--textsoft);
 }
 
-/* Custom scrollbar with cyan accent */
+/* Glassmorphism - Butter Yellow Edition */
+.glass {
+  background: rgba(255, 248, 231, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(251, 231, 155, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(255, 225, 140, 0.2);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(251, 231, 155, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(255, 225, 140, 0.25);
+}
+
+/* Custom scrollbar - Buttery */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 248, 231, 0.3);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00E5FF;
-  border-radius: 4px;
+  background: linear-gradient(135deg, #FBE79B, #FFE18C);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 225, 140, 0.4);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00C4D4;
+  background: linear-gradient(135deg, #FFD76E, #FBE79B);
 }
 
-/* Keyframe Animations */
+/* ========== WONDERLUST BUTTER ANIMATIONS ========== */
+
+/* Golden Sparkle Dust Particles */
+@keyframes float-down {
+  0% {
+    transform: translateY(-10vh) rotate(0deg) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(110vh) rotate(90deg) scale(0.7);
+    opacity: 0.2;
+  }
+}
+
+@keyframes sway {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.sun-particle {
+  position: fixed;
+  font-size: 12px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+  animation: float-down 25s linear infinite, sway 5s ease-in-out infinite, twinkle 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 225, 140, 0.5));
+}
+
+.sun-particle:nth-child(1) { left: 10%; animation-delay: 0s, 0.5s, 0s; }
+.sun-particle:nth-child(2) { left: 25%; animation-delay: 4s, 1s, 0.5s; }
+.sun-particle:nth-child(3) { left: 40%; animation-delay: 8s, 1.5s, 1s; }
+.sun-particle:nth-child(4) { left: 55%; animation-delay: 12s, 0.8s, 1.5s; }
+.sun-particle:nth-child(5) { left: 70%; animation-delay: 16s, 1.2s, 2s; }
+.sun-particle:nth-child(6) { left: 85%; animation-delay: 20s, 0.3s, 2.5s; }
+
+/* Sunrise animation */
+@keyframes sunrise {
+  0% {
+    transform: translateY(50%) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.sunrise-animation {
+  animation: sunrise 1.5s ease-out forwards;
+}
+
+/* Warm glow pulse */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 225, 140, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 225, 140, 0.4);
+  }
+}
+
+/* Floating blob animations - softer */
 @keyframes blob {
   0%, 100% {
     transform: translate(0, 0) scale(1);
   }
-  25% {
-    transform: translate(20px, -50px) scale(1.1);
+  33% {
+    transform: translate(20px, -30px) scale(1.08);
   }
-  50% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  75% {
-    transform: translate(50px, 50px) scale(1.05);
+  66% {
+    transform: translate(-20px, 20px) scale(0.92);
   }
 }
 
-@keyframes float {
+@keyframes blob-reverse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-25px, 30px) scale(1.08);
+  }
+  66% {
+    transform: translate(20px, -25px) scale(0.92);
+  }
+}
+
+/* Gradient animation */
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Float up animation - gentle */
+@keyframes float-up {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-8px);
   }
 }
 
-@keyframes gradient-x {
-  0%, 100% {
-    background-size: 200% 200%;
-    background-position: left center;
-  }
-  50% {
-    background-size: 200% 200%;
-    background-position: right center;
-  }
-}
-
-@keyframes bounce-slow {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
+/* Fade in up */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -101,36 +195,163 @@ body {
   }
 }
 
-/* Animation Classes */
+/* Bounce soft - very subtle */
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Pulse scale - minimal */
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Shimmer effect - Golden */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* ========== UTILITY CLASSES ========== */
+
 .animate-blob {
-  animation: blob 7s infinite;
+  animation: blob 15s infinite;
+}
+
+.animate-blob-reverse {
+  animation: blob-reverse 18s infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-flow 10s ease infinite;
+}
+
+.animate-glow {
+  animation: glow-pulse 4s ease-in-out infinite;
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-gradient-x {
-  animation: gradient-x 3s ease infinite;
-}
-
-.animate-bounce-slow {
-  animation: bounce-slow 3s ease-in-out infinite;
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 2s ease-in-out infinite;
+  animation: float-up 6s ease-in-out infinite;
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 1s ease-out;
+  animation: fade-in-up 0.8s ease-out forwards;
 }
 
-/* Animation Delays */
-.animation-delay-2000 {
-  animation-delay: 2s;
+.animate-bounce-soft {
+  animation: bounce-soft 3s ease-in-out infinite;
 }
 
-.animation-delay-4000 {
-  animation-delay: 4s;
+.animate-pulse-scale {
+  animation: pulse-scale 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(251, 231, 155, 0.3), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Animation delays */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-1000 { animation-delay: 1s; }
+
+/* Wonderlust butter gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #FBE79B 0%, #FFE18C 50%, #FFD76E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-flow 6s ease infinite;
+}
+
+/* Text utilities */
+.text-charcoal {
+  color: #3C3C3C;
+}
+
+.text-charcoal-light {
+  color: #6B6B6B;
+}
+
+/* ========== MOOD THEMES ========== */
+
+/* Beach mood */
+.mood-beach {
+  background: linear-gradient(135deg, #89F7FE 0%, #FBE79B 100%);
+}
+
+/* Paris mood */
+.mood-paris {
+  background: linear-gradient(135deg, #FFDDE4 0%, #FFF8E7 100%);
+}
+
+/* Mountains mood */
+.mood-mountains {
+  background: linear-gradient(135deg, #E8EAF6 0%, #FFFFFF 100%);
+}
+
+/* Tropical mood */
+.mood-tropical {
+  background: linear-gradient(135deg, #A8EDEA 0%, #FFE18C 100%);
+}
+
+/* Desert mood */
+.mood-desert {
+  background: linear-gradient(135deg, #FFE6A7 0%, #FBE79B 100%);
+}
+
+/* Default wonderlust butter mood */
+.mood-wonderlust {
+  background: linear-gradient(180deg, #FFF8E7 0%, #FBE79B 100%);
+}
+
+/* Butter button style */
+.btn-butter {
+  background: linear-gradient(135deg, #FBE79B, #FFE18C);
+  color: #3C3C3C;
+  font-weight: 700;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(251, 231, 155, 0.3);
+}
+
+.btn-butter:hover {
+  background: linear-gradient(135deg, #FFD76E, #FBE79B);
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 225, 140, 0.4);
+  border-color: #FFE18C;
+}
+
+/* Warm shadow for depth */
+.shadow-warm {
+  box-shadow: 0 8px 20px rgba(245, 230, 211, 0.4);
+}
+
+/* Golden glow on hover */
+.hover-glow {
+  transition: filter 0.3s ease;
+}
+
+.hover-glow:hover {
+  filter: drop-shadow(0 0 15px rgba(255, 225, 140, 0.6));
 }

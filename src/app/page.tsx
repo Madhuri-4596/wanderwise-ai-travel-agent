@@ -1,109 +1,131 @@
 import Link from 'next/link';
+import FloatingWindow from '@/components/common/FloatingWindow';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 relative overflow-hidden">
-      {/* Sakura Animated Background Elements */}
+    <main className="min-h-screen relative overflow-hidden">
+      {/* Golden Sparkle Dust Particles */}
+      <div className="sun-particle">✨</div>
+      <div className="sun-particle">✨</div>
+      <div className="sun-particle">✨</div>
+      <div className="sun-particle">✨</div>
+      <div className="sun-particle">✨</div>
+      <div className="sun-particle">✨</div>
+
+      {/* Animated Background Blobs - Butter tones */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-rose-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-butter/30 to-glow/20 rounded-full blur-3xl animate-blob"></div>
+        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-br from-glow/20 to-butter/30 rounded-full blur-3xl animate-blob-reverse"></div>
+        <div className="absolute -bottom-20 left-1/2 w-96 h-96 bg-gradient-to-br from-cream/40 to-butter/20 rounded-full blur-3xl animate-blob delay-1000"></div>
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Hero Section */}
-        <div className="text-center max-w-4xl mx-auto animate-fade-in-up">
-          <h1 className="text-7xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-clip-text text-transparent animate-gradient-x drop-shadow-lg">
-            🌸 WanderWise
+        <div className="text-center max-w-4xl mx-auto animate-fade-in-up sunrise-animation">
+          <div className="mb-8 animate-float">
+            <span className="text-8xl">☀️</span>
+          </div>
+
+          <h1 className="text-8xl md:text-9xl font-black mb-6 gradient-text drop-shadow-2xl">
+            Wonderlust
           </h1>
-          <p className="text-3xl font-semibold bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent mb-6 animate-pulse-slow">
-            Wander smart, travel wise
+
+          <p className="text-3xl font-bold text-charcoal mb-6">
+            your AI bestie for dream trips 💛
           </p>
-          <p className="text-xl text-gray-700 mb-10 leading-relaxed">
-            Plan perfect trips in seconds. Get personalized itineraries, flight deals,
-            and hotel recommendations powered by AI. ✨
+
+          <p className="text-lg text-charcoal-light mb-10 leading-relaxed max-w-2xl mx-auto">
+            Planning trips has never been this magical. Get personalized itineraries,
+            flight deals, and hotel recommendations from an AI that actually gets you. ✨
           </p>
+
           <Link
             href="/chat"
-            className="inline-block bg-gradient-to-r from-pink-400 to-rose-400 text-white px-10 py-5 rounded-full font-bold text-lg shadow-2xl hover:shadow-pink-400/50 transition-all duration-500 transform hover:scale-110 hover:-translate-y-2 animate-bounce-slow"
+            className="inline-block btn-butter px-12 py-6 rounded-full text-xl transform hover:scale-105 transition-all duration-300"
           >
-            Start Planning 🌸
+            Start Wandering ☀️
           </Link>
         </div>
 
-        {/* Features Grid with Staggered Animations */}
-        <div className="grid md:grid-cols-3 gap-8 mt-24 max-w-6xl mx-auto">
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mt-32 max-w-6xl mx-auto">
           <FeatureCard
-            icon="✈️"
+            icon="🧭"
             title="Smart Itineraries"
-            description="AI-powered day-by-day plans customized to your budget and preferences"
-            delay="0"
+            description="AI-powered plans that match your vibe, budget, and secret travel fantasies"
+            delay={0}
           />
           <FeatureCard
-            icon="💰"
+            icon="💛"
             title="Best Deals"
-            description="Real-time flight and hotel prices with instant booking links"
-            delay="100"
+            description="Real-time flight & hotel prices that won't make your wallet cry"
+            delay={100}
           />
           <FeatureCard
             icon="🗺️"
-            title="Local Insights"
-            description="Discover hidden gems, local food spots, and cultural tips"
-            delay="200"
+            title="Local Secrets"
+            description="Hidden gems, local food spots, and insider tips only locals know"
+            delay={200}
           />
           <FeatureCard
-            icon="🧳"
-            title="Packing Lists"
-            description="Smart packing recommendations based on destination and weather"
-            delay="300"
+            icon="🎒"
+            title="Packing Assistant"
+            description="Smart recommendations based on destination weather & your style"
+            delay={300}
           />
           <FeatureCard
             icon="🌍"
-            title="Visa Assistance"
-            description="Instant visa requirements and document checklists"
-            delay="400"
+            title="Visa Helper"
+            description="Instant visa requirements & document checklists for stress-free travel"
+            delay={400}
           />
           <FeatureCard
             icon="💬"
-            title="24/7 Support"
-            description="Chat with AI anytime for travel advice and updates"
-            delay="500"
+            title="24/7 AI Bestie"
+            description="Chat anytime for travel advice, updates, and spontaneous trip ideas"
+            delay={500}
           />
         </div>
 
         {/* CTA Section */}
-        <div className="text-center mt-24 bg-gradient-to-r from-pink-100 via-rose-50 to-pink-100 rounded-3xl p-16 shadow-2xl animate-fade-in-up border-2 border-pink-200">
-          <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-            Ready to wander wisely? 🌸
+        <div className="text-center mt-32 glass-strong rounded-[3rem] p-16 shadow-warm animate-fade-in-up max-w-4xl mx-auto">
+          <div className="mb-6 animate-bounce-soft">
+            <span className="text-6xl">☀️</span>
+          </div>
+          <h2 className="text-5xl font-black mb-6 gradient-text">
+            Ready to escape reality?
           </h2>
-          <p className="text-xl text-gray-700 mb-10">
-            Join thousands planning smarter trips with WanderWise ✨
+          <p className="text-lg text-charcoal-light mb-10">
+            Join thousands planning smarter, dreamier trips with Wonderlust ✨
           </p>
           <Link
             href="/chat"
-            className="inline-block bg-gradient-to-r from-pink-400 to-rose-400 text-white px-10 py-5 rounded-full font-bold text-lg border-4 border-transparent hover:border-pink-400 hover:bg-transparent hover:text-pink-600 shadow-2xl hover:shadow-pink-400/50 transition-all duration-500 transform hover:scale-105"
+            className="inline-block btn-butter px-10 py-5 rounded-full text-lg transform hover:scale-105 transition-all duration-300"
           >
-            Start Your Journey 🌍
+            Start Your Journey 💛
           </Link>
         </div>
       </div>
+
+      {/* Floating Window Component */}
+      <FloatingWindow />
     </main>
   );
 }
 
-function FeatureCard({ icon, title, description, delay }: { icon: string; title: string; description: string; delay: string }) {
+function FeatureCard({ icon, title, description, delay }: { icon: string; title: string; description: string; delay: number }) {
   return (
     <div
-      className="group bg-white/90 backdrop-blur-sm p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-pink-200 hover:border-rose-400 transform hover:-translate-y-4 hover:rotate-1 animate-float"
+      className="group glass-strong p-8 rounded-3xl shadow-warm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 animate-float hover-glow"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="text-6xl mb-6 filter drop-shadow-lg transform group-hover:scale-125 transition-transform duration-500 animate-bounce-slow">
+      <div className="text-6xl mb-6 transform group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 animate-bounce-soft">
         {icon}
       </div>
-      <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent group-hover:from-rose-500 group-hover:to-pink-500 transition-all duration-300">
+      <h3 className="text-2xl font-bold mb-3 text-charcoal group-hover:scale-105 transition-all duration-300">
         {title}
       </h3>
-      <p className="text-gray-600 leading-relaxed">
+      <p className="text-charcoal-light leading-relaxed">
         {description}
       </p>
     </div>

@@ -11,28 +11,18 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        // Custom theme colors
-        'electric-cyan': '#00E5FF',
-        'deep-indigo': '#3730A3',
-        'indigo': {
-          50: '#EEF2FF',
-          100: '#E0E7FF',
-          500: '#6366F1',
-          600: '#4F46E5',
-          700: '#4338CA',
-          800: '#3730A3',
-          900: '#312E81',
-        },
-        'coral': {
-          200: '#FFCCCB',
-          400: '#FF8A80',
-          500: '#FF7F50',
-          600: '#FF6B6B',
-        },
+        // Wonderlust Butter Yellow Theme
+        'butter': '#FBE79B',
+        'cream': '#FFF8E7',
+        'glow': '#FFE18C',
+        'charcoal': '#3C3C3C',
+        'charcoal-light': '#6B6B6B',
+        'textsoft': '#3C3C3C',
+        'textlight': '#6B6B6B',
       },
       boxShadow: {
-        'glow-cyan': '0 0 20px rgba(0, 229, 255, 0.3)',
-        'glow-indigo': '0 0 20px rgba(79, 70, 229, 0.3)',
+        'warm': '0 8px 20px rgba(245, 230, 211, 0.4)',
+        'glow-butter': '0 0 25px rgba(255, 225, 140, 0.4)',
       },
     },
   },

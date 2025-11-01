@@ -7,20 +7,27 @@ interface IconMenuProps {
   onClose: () => void;
 }
 
-const travelCategories = [
-  { id: 'flights', icon: '✈️', label: 'Flights', color: 'from-pink-400 to-rose-400' },
-  { id: 'hotels', icon: '🏨', label: 'Hotels', color: 'from-rose-400 to-pink-400' },
-  { id: 'itinerary', icon: '🗺️', label: 'Itinerary', color: 'from-pink-300 to-rose-300' },
-  { id: 'activities', icon: '🎭', label: 'Activities', color: 'from-rose-300 to-pink-300' },
-  { id: 'restaurants', icon: '🍽️', label: 'Dining', color: 'from-pink-400 to-rose-300' },
-  { id: 'budget', icon: '💰', label: 'Budget', color: 'from-rose-400 to-pink-300' },
+interface Category {
+  id: string;
+  icon: string;
+  label: string;
+  route: string;
+}
+
+const travelCategories: Category[] = [
+  { id: 'flights', icon: '✈️', label: 'Flights', route: '/chat?mode=flights' },
+  { id: 'hotels', icon: '🏨', label: 'Hotels', route: '/chat?mode=hotels' },
+  { id: 'explore', icon: '🗺️', label: 'Explore', route: '/chat?mode=explore' },
+  { id: 'plan', icon: '📅', label: 'Plan', route: '/chat?mode=plan' },
+  { id: 'chat', icon: '💬', label: 'Chat', route: '/chat' },
+  { id: 'journal', icon: '✏️', label: 'Journal', route: '/chat?mode=journal' },
 ];
 
 export default function IconMenu({ isOpen, onClose }: IconMenuProps) {
   const router = useRouter();
 
-  const handleIconClick = (category: string) => {
-    router.push(`/chat?category=${category}`);
+  const handleCategoryClick = (route: string) => {
+    router.push(route);
     onClose();
   };
 
@@ -28,30 +35,41 @@ export default function IconMenu({ isOpen, onClose }: IconMenuProps) {
 
   return (
     <>
-      {/* Backdrop with blur */}
+      {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 animate-fade-in"
+        className="fixed inset-0 bg-charcoal/10 backdrop-blur-sm z-40 animate-fade-in-up"
         onClick={onClose}
       />
 
       {/* Icon Menu Grid */}
-      <div className="fixed bottom-28 right-8 z-50 animate-fade-in-up">
-        <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-pink-200">
-          <h3 className="text-center text-lg font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent mb-4">
-            🌸 Choose Your Journey
+      <div className="fixed bottom-32 right-8 z-50 animate-fade-in-up">
+        <div className="glass-strong p-6 rounded-3xl shadow-warm">
+          <h3 className="text-center text-sm font-bold gradient-text mb-4">
+            choose your adventure ☀️
           </h3>
           <div className="grid grid-cols-3 gap-4">
             {travelCategories.map((category, index) => (
               <button
                 key={category.id}
-                onClick={() => handleIconClick(category.id)}
-                className={`group relative w-20 h-20 bg-gradient-to-br ${category.color} rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-110 hover:-translate-y-2 animate-float`}
-                style={{ animationDelay: `${index * 100}ms` }}
+                onClick={() => handleCategoryClick(category.route)}
+                className="
+                  group
+                  flex flex-col items-center justify-center
+                  w-20 h-20
+                  btn-butter
+                  rounded-2xl
+                  shadow-warm hover:shadow-2xl
+                  transform hover:scale-110 hover:-translate-y-2
+                  transition-all duration-300
+                  animate-fade-in-up
+                  hover-glow
+                "
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <span className="text-3xl absolute inset-0 flex items-center justify-center group-hover:scale-125 transition-transform duration-300">
+                <span className="text-3xl mb-1 group-hover:scale-125 transition-transform duration-300">
                   {category.icon}
                 </span>
-                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-semibold text-pink-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="text-xs font-semibold drop-shadow-sm">
                   {category.label}
                 </span>
               </button>
