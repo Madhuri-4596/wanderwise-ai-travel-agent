@@ -32,7 +32,7 @@ export default function Home() {
             <Link
               key={item.id}
               href={`/chat/${item.id}`}
-              className="service-card group relative bg-gradient-to-br from-slate-700/40 to-slate-800/40 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 ease-out border-2 border-transparent hover:border-purple-500/50 overflow-hidden"
+              className="group relative bg-gradient-to-br from-slate-700/40 to-slate-800/40 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 ease-out border-2 border-transparent hover:border-purple-500/50 hover:-translate-y-3 hover:shadow-[0_15px_40px_rgba(168,85,247,0.4)] overflow-hidden"
             >
               {/* Shine effect on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
@@ -61,16 +61,6 @@ export default function Home() {
         </p>
       </div>
 
-      {/* CSS for hover lift effect */}
-      <style jsx>{`
-        .service-card {
-          transform: translateY(0);
-        }
-        .service-card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 15px 40px rgba(168, 85, 247, 0.4);
-        }
-      `}</style>
     </main>
   );
 }
