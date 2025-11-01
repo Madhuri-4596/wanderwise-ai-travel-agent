@@ -18,32 +18,27 @@ export default function Home() {
         <div className="absolute -bottom-20 left-1/2 w-96 h-96 bg-gradient-to-br from-cream/40 to-butter/20 rounded-full blur-3xl animate-blob delay-1000"></div>
       </div>
 
-      <div className="container mx-auto relative z-10 max-w-6xl">
-        {/* Hero Section */}
-        <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in-up sunrise-animation">
-          <div className="mb-4 animate-float">
-            <span className="text-6xl">☀️</span>
+      <div className="container mx-auto relative z-10 flex items-center justify-center min-h-[calc(100vh-8rem)]">
+        {/* Card Container */}
+        <div className="bg-white rounded-2xl shadow-xl w-full max-w-[800px] p-8 animate-slide-up">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-semibold text-gray-800 mb-1">Wonderlust</h1>
+              <p className="text-sm text-gray-500">Multi-Agent AI Travel Assistant</p>
+            </div>
           </div>
 
-          <h1 className="text-6xl md:text-7xl font-black mb-3 gradient-text drop-shadow-2xl">
-            Wonderlust
-          </h1>
-
-          <p className="text-xl font-semibold text-charcoal mb-2">
-            your AI bestie for dream trips 💛
-          </p>
-
-          <p className="text-base text-charcoal-light leading-relaxed">
+          <p className="text-gray-600 mb-8 text-center leading-relaxed">
+            Your AI bestie for dream trips 💛<br />
             Choose your travel assistant to get started ✨
           </p>
-        </div>
 
-        {/* 2x3 Icon Grid */}
-        <IconGrid />
+          {/* 2x3 Icon Grid */}
+          <IconGrid />
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-16 animate-fade-in-up delay-500">
-          <p className="text-sm text-charcoal-light">
+          {/* Footer */}
+          <p className="text-center text-sm text-gray-500 mt-8">
             Powered by AI • Built for dreamers • Made with 💛
           </p>
         </div>
