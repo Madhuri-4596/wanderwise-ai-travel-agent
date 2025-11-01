@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
+import { Playfair_Display, Poppins } from 'next/font/google';
 import "./globals.css";
 
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const poppins = Poppins({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-poppins',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: "WanderWise - AI-Powered Trip Planning",
-  description: "Wander smart, travel wise. Get personalized itineraries, flight and hotel recommendations, and expert travel tips powered by AI.",
+  title: "Wonderlust - Your AI Travel Companion",
+  description: "Plan dream trips with AI. Get personalized itineraries, flight deals, and hotel recommendations that match your vibe.",
 };
 
 export default function RootLayout({
@@ -13,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={`${playfair.variable} ${poppins.variable} antialiased`}>
         {children}
       </body>
     </html>

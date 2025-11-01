@@ -13,28 +13,47 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   background: linear-gradient(180deg, #FFF8E7 0%, #FBE79B 100%);
   background-attachment: fixed;
   overflow-x: hidden;
   color: var(--textsoft);
 }
 
-/* Glassmorphism - Butter Yellow Edition */
+/* Playfair for titles */
+h1, h2, h3 {
+  font-family: var(--font-playfair), serif;
+}
+
+/* Glassmorphism - Butter Yellow Edition - PREMIUM */
 .glass {
-  background: rgba(255, 248, 231, 0.7);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
   border: 1px solid rgba(251, 231, 155, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(255, 225, 140, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(255, 225, 140, 0.3);
 }
 
 .glass-strong {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
+  border-radius: 16px;
   border: 1px solid rgba(251, 231, 155, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(255, 225, 140, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-strong:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(255, 225, 140, 0.3);
 }
 
 /* Custom scrollbar - Buttery */
@@ -325,21 +344,26 @@ body {
   background: linear-gradient(180deg, #FFF8E7 0%, #FBE79B 100%);
 }
 
-/* Butter button style */
+/* Butter button style - PREMIUM GLOW */
 .btn-butter {
-  background: linear-gradient(135deg, #FBE79B, #FFE18C);
+  background: linear-gradient(90deg, #FFE18C, #FBE79B);
   color: #3C3C3C;
   font-weight: 700;
+  border-radius: 50px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(251, 231, 155, 0.3);
+  box-shadow: 0 0 20px rgba(255, 230, 130, 0.6);
 }
 
 .btn-butter:hover {
-  background: linear-gradient(135deg, #FFD76E, #FBE79B);
-  transform: scale(1.03) translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 225, 140, 0.4);
-  border-color: #FFE18C;
+  background: linear-gradient(90deg, #FBE79B, #FFE18C);
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(255, 230, 130, 0.8);
+  border-color: transparent;
+}
+
+.btn-butter:active {
+  transform: scale(0.98);
 }
 
 /* Warm shadow for depth */
