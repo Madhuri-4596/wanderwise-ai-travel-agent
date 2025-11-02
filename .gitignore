@@ -33,7 +33,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# video files (large)
-/public/videos/*.mp4
-/public/videos/*.webm
-/public/videos/*.mov
+# video files (large) - commented out to allow travel-bg.mp4
+# /public/videos/*.mp4
+# /public/videos/*.webm
+# /public/videos/*.mov
