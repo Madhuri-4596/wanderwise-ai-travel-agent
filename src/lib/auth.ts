@@ -1,17 +1,10 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
+import { users } from '@/app/api/auth/signup/route';
 
-// This is a simple in-memory user store for demo purposes
-// In production, you would use a database
-const users = [
-  {
-    id: '1',
-    name: 'Demo User',
-    email: 'demo@luno.com',
-    password: '$2a$10$rQ5y0KvPYLLI2kGf8LKFhOKvYJ7Xv.cJp0QBZ4YFvW6YfZ9EJ5K0e', // "password123"
-  },
-];
+// Users are now managed in the signup route
+// This allows sharing the same user array across signup and login
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
