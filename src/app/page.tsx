@@ -29,7 +29,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-sunset-gradient">
+    <main className="min-h-screen bg-transparent">
       {/* Main grid of 6 feature boxes */}
       <IconGrid onFeatureClick={handleFeatureClick} />
 
