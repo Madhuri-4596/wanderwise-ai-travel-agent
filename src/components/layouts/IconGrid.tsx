@@ -88,7 +88,24 @@ const travelFeatures: TravelFeature[] = [
 
 export default function IconGrid({ onFeatureClick }: IconGridProps) {
   return (
-    <div className="w-full max-w-7xl mx-auto px-8 py-16">
+    <div className="relative min-h-screen">
+      {/* Video Background */}
+      <div className="fixed inset-0 w-full h-full -z-10">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/videos/travel-bg.mp4" type="video/mp4" />
+        </video>
+        {/* Overlay for better content readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/70 to-white/60 backdrop-blur-[1px]"></div>
+      </div>
+
+      {/* Content */}
+      <div className="relative w-full max-w-7xl mx-auto px-8 py-16">
       {/* Luxury Header */}
       <div className="text-center mb-20">
         <h1 className="text-7xl font-black text-sunset-text mb-4 tracking-[0.15em]">
@@ -161,6 +178,7 @@ export default function IconGrid({ onFeatureClick }: IconGridProps) {
             </div>
           </button>
         ))}
+      </div>
       </div>
     </div>
   );
