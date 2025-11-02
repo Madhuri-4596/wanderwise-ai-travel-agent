@@ -1,23 +1,10 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Poppins } from 'next/font/google';
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap',
-});
-
-const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700'],
-  subsets: ['latin'],
-  variable: '--font-poppins',
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  title: "Wonderlust - Your AI Travel Companion",
-  description: "Plan dream trips with AI. Get personalized itineraries, flight deals, and hotel recommendations that match your vibe.",
+  title: "LUNO Travel Agent - Your Best Trip Budget Bot",
+  description: "Smart AI-powered travel assistant helping you find the best flights, hotels, and rides at budget-friendly prices",
 };
 
 export default function RootLayout({
@@ -27,8 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${poppins.variable} antialiased`}>
-        {children}
+      <body>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

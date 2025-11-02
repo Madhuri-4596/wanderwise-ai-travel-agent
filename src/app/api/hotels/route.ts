@@ -1,103 +1,77 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { HotelOption } from '@/types';
+import { openai, model } from '@/lib/openai';
 
-// This is a placeholder implementation
-// In production, integrate with Amadeus API or Booking.com API
+const systemPrompt = `You are a specialized Hotel Booking Assistant for LUNO Travel Agent, your best trip budget bot.
+
+IMPORTANT: When a user mentions a destination, IMMEDIATELY search and provide hotel options. Assume standard dates (3-4 nights) unless specified.
+
+Your response format:
+1. Say "🏨 Searching for hotels in [destination]..."
+2. Show 4-5 hotel options with:
+   - Hotel name and star rating (⭐⭐⭐ format)
+   - Location/area
+   - Room type
+   - Price per night in ₹ or $
+   - Key amenities (WiFi, Pool, Breakfast, etc.)
+   - Rating (out of 5)
+   - Mark the 💰 CHEAPEST option
+   - Mark the 🏆 BEST VALUE option
+3. Provide booking links like: https://www.booking.com/searchresults.html?ss=[city-name]
+4. Be enthusiastic and helpful
+
+Example response:
+"🏨 Searching for hotels in Goa...
+
+I found some amazing stays for you!
+
+💰 CHEAPEST OPTION:
+Beach Breeze Resort ⭐⭐⭐
+Calangute Beach, North Goa
+Deluxe Room
+₹2,500/night
+✓ Free WiFi ✓ Pool ✓ Breakfast
+Rating: 4.2/5 ⭐
+Book: https://www.booking.com/searchresults.html?ss=Goa
+
+🏆 BEST VALUE:
+Paradise Beach Resort ⭐⭐⭐⭐
+Candolim, North Goa
+Sea View Room
+₹4,800/night
+✓ Beachfront ✓ Pool ✓ Spa ✓ Restaurant
+Rating: 4.7/5 ⭐
+Book: https://www.booking.com/searchresults.html?ss=Goa
+
+[Continue with 2-3 more options...]"
+
+Use realistic hotel names, prices, and ratings. Always provide booking links.`;
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { destination, checkIn, checkOut, guests = 2 } = body;
+    const { message, conversationHistory = [] } = await request.json();
 
-    // TODO: Replace with actual Amadeus Hotel API integration
-    // Example Amadeus Hotel Search:
-    // 1. Use Amadeus Hotel Search API
-    // 2. Get hotel details and pricing
-    // 3. Map to HotelOption interface
-
-    // Calculate nights
-    const checkInDate = new Date(checkIn);
-    const checkOutDate = new Date(checkOut);
-    const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
-
-    // Mock hotel data
-    const mockHotels: HotelOption[] = [
-      {
-        id: '1',
-        name: 'Luxury Beach Resort',
-        location: `${destination} City Center`,
-        rating: 4.5,
-        price: 150 * nights,
-        currency: 'USD',
-        pricePerNight: 150,
-        nights,
-        amenities: ['Pool', 'WiFi', 'Spa', 'Restaurant', 'Beach Access'],
-        bookingLink: `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(destination)}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${guests}`,
-        imageUrl: `https://source.unsplash.com/800x600/?hotel,${destination}`,
-      },
-      {
-        id: '2',
-        name: 'Downtown Business Hotel',
-        location: `${destination} Downtown`,
-        rating: 4.0,
-        price: 90 * nights,
-        currency: 'USD',
-        pricePerNight: 90,
-        nights,
-        amenities: ['WiFi', 'Breakfast', 'Gym', 'Meeting Rooms'],
-        bookingLink: `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(destination)}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${guests}`,
-        imageUrl: `https://source.unsplash.com/800x600/?hotel,business`,
-      },
-      {
-        id: '3',
-        name: 'Budget Hostel & Backpackers',
-        location: `${destination} Tourist District`,
-        rating: 3.8,
-        price: 35 * nights,
-        currency: 'USD',
-        pricePerNight: 35,
-        nights,
-        amenities: ['WiFi', 'Shared Kitchen', 'Common Area', 'Lockers'],
-        bookingLink: `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(destination)}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${guests}`,
-        imageUrl: `https://source.unsplash.com/800x600/?hostel`,
-      },
+    const messages = [
+      { role: 'system' as const, content: systemPrompt },
+      ...conversationHistory,
+      { role: 'user' as const, content: message },
     ];
 
-    return NextResponse.json({
-      hotels: mockHotels,
-      message: 'Hotel search completed (using mock data)',
+    const completion = await openai.chat.completions.create({
+      model,
+      messages,
+      temperature: 0.7,
+      max_tokens: 1500,
     });
 
+    const assistantMessage = completion.choices[0]?.message?.content ||
+      'Sorry, I encountered an error. Please try again.';
+
+    return NextResponse.json({ message: assistantMessage });
   } catch (error) {
-    console.error('Hotel API Error:', error);
+    console.error('OpenAI API Error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch hotel data' },
+      { error: 'Failed to process request' },
       { status: 500 }
     );
   }
 }
-
-/*
-AMADEUS HOTEL API INTEGRATION:
--------------------------------
-1. Install: npm install amadeus
-
-2. Search hotels by city:
-   const response = await amadeus.referenceData.locations.hotels.byCity.get({
-     cityCode: cityCode
-   });
-
-3. Get hotel offers:
-   const offers = await amadeus.shopping.hotelOffersSearch.get({
-     hotelIds: hotelId,
-     checkInDate: checkIn,
-     checkOutDate: checkOut,
-     adults: guests
-   });
-
-ALTERNATIVE - Booking.com Affiliate:
-------------------------------------
-Instead of API integration, use Booking.com affiliate links
-Users click through to Booking.com and you earn commission
-Easier to implement and maintain
-*/

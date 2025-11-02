@@ -1,38 +1,32 @@
 {
-  "name": "wanderwise",
-  "version": "1.0.0",
-  "description": "WanderWise - AI-powered trip planning. Wander smart, travel wise.",
-  "main": "index.js",
+  "name": "wonderlust",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
-  "keywords": [
-    "ai",
-    "travel",
-    "trip-planner",
-    "wanderwise",
-    "itinerary"
-  ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.16",
-    "@types/node": "^24.9.2",
-    "@types/react": "^19.2.2",
-    "autoprefixer": "^10.4.21",
-    "next": "^16.0.1",
-    "openai": "^6.7.0",
-    "postcss": "^8.5.6",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.16",
-    "typescript": "^5.9.3"
+    "bcryptjs": "^3.0.2",
+    "next": "^14.2.0",
+    "next-auth": "^5.0.0-beta.30",
+    "openai": "^4.28.0",
+    "razorpay": "^2.9.6",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
   },
   "devDependencies": {
-    "eslint": "^9.39.0",
-    "eslint-config-next": "^16.0.1"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

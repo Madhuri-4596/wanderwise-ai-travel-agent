@@ -9,23 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        // Wonderlust Butter Yellow Theme
-        'butter': '#FBE79B',
-        'cream': '#FFF8E7',
-        'glow': '#FFE18C',
-        'charcoal': '#3C3C3C',
-        'charcoal-light': '#6B6B6B',
-        'textsoft': '#3C3C3C',
-        'textlight': '#6B6B6B',
+        sunset: {
+          light: '#FFF4E0',
+          medium: '#FFD8B5',
+          card: '#FFF',
+          hover: '#FFE2C2',
+          text: '#4B3832',
+          accent: '#FF7F50',
+        },
+      },
+      backgroundImage: {
+        'sunset-gradient': 'linear-gradient(180deg, #FFF4E0, #FFD8B5)',
       },
       boxShadow: {
-        'warm': '0 8px 20px rgba(245, 230, 211, 0.4)',
-        'glow-butter': '0 0 25px rgba(255, 225, 140, 0.4)',
+        'sunset': '0 4px 20px rgba(255, 140, 0, 0.2)',
+        'sunset-hover': '0 8px 30px rgba(255, 140, 0, 0.3)',
       },
     },
   },
   plugins: [],
 };
+
 export default config;

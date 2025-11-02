@@ -1,66 +1,68 @@
 'use client';
 
-import { useState, KeyboardEvent } from 'react';
+import React, { KeyboardEvent } from 'react';
 
 interface ChatTextareaProps {
-  onSend: (message: string) => void;
+  value: string;
+  onChange: (value: string) => void;
+  onSend: () => void;
   placeholder?: string;
   disabled?: boolean;
 }
 
 export default function ChatTextarea({
+  value,
+  onChange,
   onSend,
-  placeholder = "✨ Tell me about your dream destination...",
-  disabled = false
+  placeholder = "Type your message...",
+  disabled = false,
 }: ChatTextareaProps) {
-  const [message, setMessage] = useState('');
-
-  const handleSend = () => {
-    if (message.trim() && !disabled) {
-      onSend(message.trim());
-      setMessage('');
-    }
-  };
-
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      if (value.trim() && !disabled) {
+        onSend();
+      }
     }
   };
 
   return (
-    <div className="relative">
-      {/* Butter glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-butter/20 to-glow/20 rounded-3xl blur-xl"></div>
-
-      <div className="relative bg-white/90 backdrop-blur-md rounded-3xl border-2 border-butter/40 shadow-xl p-4 transition-all duration-300 focus-within:border-glow focus-within:shadow-2xl">
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={disabled}
-          placeholder={placeholder}
-          rows={3}
-          className="w-full bg-transparent resize-none focus:outline-none text-charcoal placeholder-charcoal-light/50 text-lg leading-relaxed"
-        />
-
-        {/* Send Button */}
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-xs text-charcoal-light">
-            Press Enter to send, Shift+Enter for new line
-          </span>
-          <button
-            onClick={handleSend}
-            disabled={disabled || !message.trim()}
-            className="px-6 py-2 bg-gradient-to-r from-glow to-butter text-charcoal rounded-full font-bold shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
-          >
-            <span className="flex items-center gap-2">
-              Send ✨
-            </span>
-          </button>
-        </div>
-      </div>
+    <div className="relative w-full">
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        disabled={disabled}
+        rows={3}
+        className="w-full px-4 py-3 pr-12 rounded-2xl border-2 border-sunset-accent/20
+                   bg-white text-sunset-text placeholder-sunset-text/40
+                   focus:outline-none focus:border-sunset-accent focus:ring-2 focus:ring-sunset-accent/20
+                   resize-none smooth-transition disabled:opacity-50 disabled:cursor-not-allowed"
+      />
+      <button
+        onClick={onSend}
+        disabled={disabled || !value.trim()}
+        className="absolute right-3 bottom-3 p-2 rounded-lg bg-sunset-accent text-white
+                   hover:bg-sunset-accent/90 disabled:opacity-50 disabled:cursor-not-allowed
+                   smooth-transition"
+        aria-label="Send message"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="w-5 h-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+          />
+        </svg>
+      </button>
     </div>
   );
 }

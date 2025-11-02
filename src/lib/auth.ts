@@ -1,75 +1,73 @@
-// Authentication utilities
-// This is a placeholder for authentication setup
-// You can integrate Supabase, Firebase, or NextAuth.js
+import NextAuth from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
 
-/*
-SUPABASE SETUP (Recommended):
-------------------------------
-1. Install: npm install @supabase/supabase-js @supabase/auth-ui-react @supabase/auth-ui-shared
+// This is a simple in-memory user store for demo purposes
+// In production, you would use a database
+const users = [
+  {
+    id: '1',
+    name: 'Demo User',
+    email: 'demo@luno.com',
+    password: '$2a$10$rQ5y0KvPYLLI2kGf8LKFhOKvYJ7Xv.cJp0QBZ4YFvW6YfZ9EJ5K0e', // "password123"
+  },
+];
 
-2. Create Supabase project at https://supabase.com
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [
+    Credentials({
+      name: 'credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
 
-3. Create client:
-   import { createClient } from '@supabase/supabase-js'
+        const user = users.find((user) => user.email === credentials.email);
 
-   export const supabase = createClient(
-     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-   )
+        if (!user) {
+          return null;
+        }
 
-4. Set up auth UI:
-   import { Auth } from '@supabase/auth-ui-react'
-   import { ThemeSupa } from '@supabase/auth-ui-shared'
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password as string,
+          user.password
+        );
 
-   <Auth
-     supabaseClient={supabase}
-     appearance={{ theme: ThemeSupa }}
-     providers={['google', 'github']}
-   />
+        if (!isPasswordValid) {
+          return null;
+        }
 
-5. Database schema for user trips:
-   create table trips (
-     id uuid primary key default uuid_generate_v4(),
-     user_id uuid references auth.users not null,
-     destination text,
-     data jsonb,
-     created_at timestamp with time zone default now()
-   );
-*/
-
-/*
-FIREBASE SETUP (Alternative):
-------------------------------
-1. Install: npm install firebase
-
-2. Initialize Firebase:
-   import { initializeApp } from 'firebase/app'
-   import { getAuth } from 'firebase/auth'
-
-   const firebaseConfig = {
-     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-   }
-
-   const app = initializeApp(firebaseConfig)
-   export const auth = getAuth(app)
-
-3. Use Firebase Auth UI for easy login
-*/
-
-/*
-NEXTAUTH.JS SETUP (Most flexible):
------------------------------------
-1. Install: npm install next-auth
-
-2. Create /app/api/auth/[...nextauth]/route.ts
-
-3. Configure providers (Google, GitHub, Email, etc.)
-
-4. Use useSession() hook in components
-*/
-
-export const authPlaceholder = {
-  message: 'Authentication not yet configured. Choose Supabase, Firebase, or NextAuth.js',
-};
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        };
+      },
+    }),
+  ],
+  pages: {
+    signIn: '/login',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
+  session: {
+    strategy: 'jwt',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+});

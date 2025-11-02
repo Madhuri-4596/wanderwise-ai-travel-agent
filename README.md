@@ -1,453 +1,207 @@
-# 🌍 WanderWise
+# LUNO Travel Agent - Your Best Trip Budget Bot
 
-> Wander smart, travel wise - Your AI-powered trip planner
+Smart AI-powered travel assistant helping you find the best flights, hotels, and rides at budget-friendly prices. Built with Next.js, OpenAI, and NextAuth.
 
-Built with Next.js, OpenAI, and Travel APIs
+## Features
 
-Turn travel dreams into reality with AI-generated itineraries, real-time flight/hotel prices, and personalized recommendations. **Perfect for your portfolio AND scalable into a real startup.**
+- **6 Specialized AI Agents:**
+  - ✈️ Flights - Search and book flights
+  - 🏨 Hotels - Find perfect accommodations
+  - 🚗 Rides - Book transportation
+  - 📍 Nearby Spots - Discover local attractions
+  - 💬 AI Travel Agent - General travel planning
+  - 🎒 My Trips - View and manage itineraries
 
-![Tech Stack](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-412991?logo=openai)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC?logo=tailwind-css)
+- **Authentication System:**
+  - Secure login with NextAuth.js
+  - Protected routes with middleware
+  - Session management with JWT
+  - Beautiful video background on login page
 
----
+- **Video Backgrounds:**
+  - Dynamic video backgrounds on login page
+  - Video backgrounds in all 6 multi-agent chat windows
+  - Optimized overlays for text readability
 
-## ✨ Features
+- **Vibrant UI Design:**
+  - Orange/red gradient theme
+  - Bold typography for better readability
+  - Smooth animations and glassmorphism effects
+  - Responsive chat windows with minimize/maximize controls
 
-- 🤖 **AI Chat Interface** - Natural conversation for trip planning
-- ✈️ **Real-Time Flight Data** - Integration-ready for Amadeus/Skyscanner APIs
-- 🏨 **Hotel Recommendations** - Smart accommodation suggestions with pricing
-- 📅 **Auto-Generated Itineraries** - Day-by-day plans with activities, meals, and costs
-- 🧳 **Smart Packing Lists** - Destination-specific recommendations
-- 🌍 **Visa Assistance** - Requirements and document checklists
-- 💰 **Budget Optimization** - Plans that fit your budget
-- 🔗 **Shareable Trips** - Beautiful itinerary pages
-- 📱 **Responsive Design** - Works perfectly on mobile and desktop
+- **Modular Component Architecture:**
+  - Reusable `ChatTextarea` for message input
+  - `MessageBubble` for chat messages
+  - `IconGrid` for the 6 feature boxes
+  - `ChatWindow` that slides up from bottom
+  - `FloatingWindow` for quick AI access
 
----
-
-## 🚀 Quick Start
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ installed
-- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
-- (Optional) Amadeus API credentials for live flight/hotel data
+- OpenAI API key
+- (Optional) Razorpay account for payment integration
 
 ### Installation
 
+1. Install dependencies:
 ```bash
-# Clone or navigate to the project
-cd wanderwise
-
-# Install dependencies
 npm install
+```
 
-# Set up environment variables
-cp .env.example .env.local
+2. Create a `.env` file from the example:
+```bash
+cp .env.example .env
+```
 
-# Add your OpenAI API key to .env.local
-# OPENAI_API_KEY=sk-your-key-here
+3. Configure environment variables in `.env`:
+```bash
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4-turbo-preview
 
-# Run development server
+# NextAuth Configuration
+NEXTAUTH_SECRET=generate_using_openssl_rand_base64_32
+NEXTAUTH_URL=http://localhost:3000
+
+# Razorpay (Optional - for payments)
+RAZORPAY_KEY_ID=your_razorpay_key_id_here
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret_here
+```
+
+To generate a secure `NEXTAUTH_SECRET`:
+```bash
+openssl rand -base64 32
+```
+
+4. Add your travel video background:
+   - Place a video file named `travel-bg.mp4` in the `public/videos/` directory
+   - See `public/videos/README.md` for video requirements and sources
+   - Free videos available at: Pexels, Pixabay, or Unsplash
+
+5. Run the development server:
+```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and start planning trips!
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
----
+### Default Login Credentials
 
-## 📁 Project Structure
+For demo purposes, use these credentials:
+- **Email**: demo@luno.com
+- **Password**: password123
+
+**Important**: In production, replace the in-memory user store in `src/lib/auth.ts` with a proper database.
+
+## Project Structure
 
 ```
-wanderwise/
-├── src/
-│   ├── app/
-│   │   ├── api/
-│   │   │   ├── planTrip/       # OpenAI trip planning endpoint
-│   │   │   ├── flights/        # Flight search API
-│   │   │   ├── hotels/         # Hotel search API
-│   │   │   └── auth/           # Authentication routes
-│   │   ├── chat/               # Chat interface page
-│   │   ├── trip/[id]/          # Trip itinerary viewer
-│   │   ├── layout.tsx          # Root layout
-│   │   ├── page.tsx            # Landing page
-│   │   └── globals.css         # Global styles
-│   ├── components/
-│   │   ├── ChatInterface.tsx   # Main chat UI
-│   │   └── TripItinerary.tsx   # Trip display component
-│   ├── lib/
-│   │   └── auth.ts             # Auth utilities
-│   └── types/
-│       └── index.ts            # TypeScript definitions
-├── .env.example                # Environment variables template
-├── package.json
-└── README.md
+src/
+├── app/
+│   ├── api/              # API routes for each agent
+│   │   ├── auth/
+│   │   │   └── [...nextauth]/  # NextAuth authentication
+│   │   ├── payment/      # Razorpay payment integration
+│   │   ├── flights/
+│   │   ├── hotels/
+│   │   ├── rides/
+│   │   ├── nearby/
+│   │   ├── ai-agent/
+│   │   └── trips/
+│   ├── login/
+│   │   └── page.tsx      # Login page with video background
+│   ├── globals.css       # Global styles
+│   ├── layout.tsx        # Root layout with SessionProvider
+│   └── page.tsx          # Main page with IconGrid
+├── components/
+│   ├── common/           # Reusable components
+│   │   ├── ChatTextarea.tsx
+│   │   └── MessageBubble.tsx  # With Razorpay integration
+│   └── layouts/          # Layout components
+│       ├── IconGrid.tsx  # 6 agent features
+│       ├── ChatWindow.tsx  # With video background
+│       └── FloatingWindow.tsx
+├── hooks/
+│   └── useRazorpay.ts    # Payment hook
+├── lib/
+│   ├── auth.ts           # NextAuth configuration
+│   └── openai.ts         # OpenAI client
+├── types/
+│   └── index.ts          # TypeScript type definitions
+├── middleware.ts         # Route protection
+└── ...
 ```
 
----
+## How It Works
 
-## 🔑 API Setup Guide
+1. **Authentication Flow:**
+   - Users are redirected to the login page with video background
+   - Login with demo credentials or custom users
+   - JWT-based session management
+   - Protected routes via middleware
 
-### 1. OpenAI (Required)
+2. **Home Page:** Displays 6 rounded feature boxes in a 2×3 grid with LUNO branding
 
-```bash
-# Get your API key from https://platform.openai.com/api-keys
-OPENAI_API_KEY=sk-your-key-here
-```
+3. **Click a Box:** Opens a sliding chat window with video background
 
-**Cost Optimization:**
-- Currently uses `gpt-4o-mini` (~$0.15 per 1M input tokens)
-- Upgrade to `gpt-4o` for better quality (~$2.50 per 1M input tokens)
-- Average trip planning costs ~$0.01-0.03 per conversation
+4. **Chat Interface:**
+   - Each agent has its own specialized API endpoint
+   - Conversation history maintained throughout session
+   - Real-time AI responses from OpenAI
+   - Video background with overlay for readability
 
-### 2. Amadeus Travel API (Optional - for real data)
+5. **Payment Integration:**
+   - "Book Now & Pay" button appears for booking results
+   - Integrated Razorpay checkout
+   - Automatic price extraction from AI responses
 
-```bash
-# Sign up at https://developers.amadeus.com/
-# Free tier: 10,000 API calls/month
+6. **Window Controls:**
+   - Minimize/maximize chat windows
+   - Close button to return to home
+   - Full-screen mode available
 
-AMADEUS_CLIENT_ID=your-client-id
-AMADEUS_CLIENT_SECRET=your-client-secret
-```
+## Next Steps
 
-**Integration Steps:**
-1. Install SDK: `npm install amadeus`
-2. Update `/src/app/api/flights/route.ts` with Amadeus client
-3. Replace mock data with real API calls
+### Production Deployment
 
-**Alternative:** Use Skyscanner RapidAPI (easier but limited free tier)
+1. **Database Integration:**
+   - Replace in-memory user store with a database (PostgreSQL, MongoDB, etc.)
+   - Add user registration functionality
+   - Store user sessions and trip history
 
-### 3. Authentication (Choose One)
+2. **Video Background:**
+   - Add your travel video to `public/videos/travel-bg.mp4`
+   - Optimize video file size for web performance
 
-#### Option A: Supabase (Recommended)
-```bash
-npm install @supabase/supabase-js @supabase/auth-ui-react
+3. **Environment Variables:**
+   - Set up all required environment variables in your hosting platform
+   - Generate and add a secure `NEXTAUTH_SECRET`
+   - Add production `NEXTAUTH_URL`
 
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-```
+4. **Affiliate Programs:**
+   - Sign up for TravelPayouts, Booking.com, or similar
+   - Replace booking links with your affiliate links
+   - Update agent prompts with your affiliate IDs
 
-#### Option B: Firebase
-```bash
-npm install firebase
-
-NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-```
-
-#### Option C: NextAuth.js
-```bash
-npm install next-auth
-# Configure in /app/api/auth/[...nextauth]/route.ts
-```
+5. **Payment Integration:**
+   - Create a Razorpay account
+   - Add test and live API keys
+   - Configure webhook endpoints for payment verification
 
----
+6. **Security:**
+   - Enable CORS restrictions
+   - Add rate limiting
+   - Implement proper error handling and logging
 
-## 💸 Monetization Strategies
+## Customization
 
-### 1. Affiliate Commissions (Primary Revenue)
+- **Colors:** Edit `tailwind.config.ts` to change the sunset theme
+- **Agents:** Modify `src/components/layouts/IconGrid.tsx` to add/remove features
+- **Animations:** Update `src/app/globals.css` for different effects
 
-**Flight & Hotel Bookings:**
-- Skyscanner: ~5% commission per booking
-- Booking.com: 25-40% commission
-- Expedia: 3-8% commission
-- Trip.com: 5-10% commission
+## License
 
-**Tours & Experiences:**
-- GetYourGuide: 8-12% per booking
-- Viator: 8% per booking
-
-**Implementation:**
-```javascript
-// Add affiliate IDs to booking links
-const bookingLink = `https://www.booking.com/searchresults.html?aid=${AFFILIATE_ID}&...`;
-```
-
-### 2. Freemium Model
-
-**Free Tier:**
-- 3 trip plans per month
-- Basic itineraries
-- Standard destinations
-
-**Pro Tier ($9.99/month):**
-- Unlimited trip planning
-- Advanced AI features (GPT-4)
-- Real-time price alerts
-- Priority support
-- Shareable custom itineraries
-
-**Premium Tier ($29.99/month):**
-- Everything in Pro
-- Concierge support during travel
-- Group trip planning
-- White-label for travel agents
-
-### 3. B2B Licensing
-
-**Sell to travel agencies:**
-- $99-499/month per agency
-- White-label your AI planner
-- Custom branding
-- API access
-
-### 4. Sponsored Destinations
-
-**Partner with tourism boards:**
-- Feature specific destinations
-- $500-2000 per campaign
-- Native advertising in recommendations
-
-### 5. Data Insights (Ethical)
-
-**Anonymized trend data:**
-- Where people want to travel
-- Budget preferences
-- Activity interests
-- Sell to tourism companies
-
----
-
-## 📊 Revenue Projections (Example)
-
-### Month 1-3 (Launch Phase)
-- **Users:** 1,000 monthly active
-- **Affiliate conversions:** 2% (20 bookings)
-- **Avg commission:** $25 per booking
-- **Monthly revenue:** ~$500
-
-### Month 6 (Growth Phase)
-- **Users:** 10,000 monthly active
-- **Affiliate conversions:** 3% (300 bookings)
-- **Premium subscribers:** 100 users @ $9.99
-- **Monthly revenue:** ~$8,500
-  - Affiliate: $7,500
-  - Subscriptions: $1,000
-
-### Month 12 (Scale Phase)
-- **Users:** 50,000 monthly active
-- **Affiliate conversions:** 4% (2,000 bookings)
-- **Premium subscribers:** 1,000 @ $9.99
-- **B2B clients:** 5 agencies @ $199
-- **Monthly revenue:** ~$60,000+
-  - Affiliate: $50,000
-  - Subscriptions: $10,000
-  - B2B: $1,000
-
----
-
-## 🚀 Deployment
-
-### Deploy to Vercel (Recommended - Free)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-
-# Add environment variables in Vercel dashboard
-```
-
-**Why Vercel:**
-- Free hobby tier
-- Perfect for Next.js
-- Auto-scaling
-- Built-in analytics
-- Custom domains
-
-### Alternative Platforms
-
-**Netlify:**
-```bash
-npm run build
-netlify deploy --prod
-```
-
-**Railway / Render:**
-- Better for databases
-- Slightly higher costs
-- More control
-
----
-
-## 🛠️ Development Roadmap
-
-### Week 1-2: MVP ✅
-- [x] Chat interface
-- [x] OpenAI integration
-- [x] Basic itinerary generation
-- [x] Mock flight/hotel data
-
-### Week 3-4: Data Integration
-- [ ] Amadeus API integration
-- [ ] Real flight prices
-- [ ] Real hotel availability
-- [ ] User authentication
-
-### Week 5-6: Polish
-- [ ] Save trips to database
-- [ ] Share functionality
-- [ ] PDF export
-- [ ] Mobile optimization
-
-### Week 7-8: Monetization
-- [ ] Affiliate link integration
-- [ ] Premium subscription
-- [ ] Payment processing (Stripe)
-- [ ] Analytics dashboard
-
-### Future Features
-- [ ] Multi-language support
-- [ ] Currency conversion
-- [ ] Travel insurance integration
-- [ ] Group trip planning
-- [ ] Real-time travel alerts
-- [ ] Mobile app (React Native)
-
----
-
-## 🎯 Marketing & Growth
-
-### Launch Strategy
-
-1. **Product Hunt Launch**
-   - Prepare demo video
-   - Create compelling story
-   - Aim for Product of the Day
-
-2. **Social Media**
-   - TikTok: Trip planning demos
-   - Instagram: Beautiful itineraries
-   - Twitter: Travel tips + AI insights
-
-3. **Content Marketing**
-   - Blog: "How AI Plans Better Trips"
-   - YouTube: Tutorial videos
-   - Reddit: Share in r/travel, r/solotravel
-
-4. **SEO**
-   - Target keywords: "AI trip planner", "travel itinerary generator"
-   - Create destination guides
-   - Build backlinks
-
-5. **Partnerships**
-   - Collaborate with travel bloggers
-   - Affiliate with influencers
-   - Partner with tourism boards
-
----
-
-## 🧪 Testing
-
-```bash
-# Run dev server
-npm run dev
-
-# Build for production
-npm run build
-
-# Run production build locally
-npm start
-
-# Lint code
-npm run lint
-```
-
-**Test Scenarios:**
-1. Plan a 5-day trip to Bali under $1500
-2. Weekend romantic getaway in Paris
-3. Family vacation to Tokyo with kids
-4. Budget backpacking through Thailand
-
----
-
-## 🤝 Contributing
-
-Want to make this better? Here's how:
-
-1. Fork the repo
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-**Priority Features:**
-- Real API integrations
-- Better itinerary formatting
-- Multi-language support
-- Mobile app
-
----
-
-## 📄 License
-
-MIT License - feel free to use this for your portfolio or startup!
-
----
-
-## 💡 Pro Tips
-
-### Cost Optimization
-- Use `gpt-4o-mini` for most queries (95% cheaper than GPT-4)
-- Cache common destinations
-- Implement rate limiting
-- Use Vercel free tier
-
-### User Experience
-- Keep initial responses under 3 seconds
-- Add loading animations
-- Show example prompts
-- Enable retry on errors
-
-### Growth Hacks
-- Referral program (20% commission)
-- Viral trip sharing
-- Instagram-worthy itinerary images
-- "Built with AI" badge
-
-### Security
-- Never expose API keys client-side
-- Implement rate limiting
-- Validate all user inputs
-- Use HTTPS everywhere
-
----
-
-## 🆘 Troubleshooting
-
-**OpenAI API errors:**
-- Check your API key is valid
-- Verify you have credits
-- Check rate limits
-
-**Styling not working:**
-- Run `npm install` again
-- Delete `.next` folder and rebuild
-- Check Tailwind config
-
-**Build errors:**
-- Clear node_modules: `rm -rf node_modules && npm install`
-- Update Next.js: `npm install next@latest`
-
----
-
-## 📞 Support
-
-- **Issues:** [GitHub Issues](https://github.com/yourusername/wanderwise/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/wanderwise/discussions)
-- **Email:** your@email.com
-
----
-
-## 🌟 Show Your Support
-
-If this helped you build something cool, give it a ⭐ on GitHub!
-
-**Built with love by [Your Name]**
-
----
-
-*Ready to disrupt the $800B travel industry with AI? Let's go! 🚀*
+MIT
