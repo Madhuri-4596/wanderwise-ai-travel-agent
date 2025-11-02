@@ -201,6 +201,7 @@ export default function ChatWindow({ isOpen, onClose, agentType, agentTitle }: C
                 loop
                 muted
                 playsInline
+                preload="auto"
                 className="w-full h-full object-cover"
               >
                 <source src="/videos/travel-bg.mp4" type="video/mp4" />
