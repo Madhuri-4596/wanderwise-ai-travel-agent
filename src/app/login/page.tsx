@@ -36,7 +36,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-orange-500 via-red-500 to-pink-600">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full">
         <video
@@ -47,10 +47,9 @@ export default function LoginPage() {
           className="w-full h-full object-cover"
         >
           <source src="/videos/travel-bg.mp4" type="video/mp4" />
-          {/* Fallback gradient if video doesn't load */}
         </video>
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/50 to-black/60 backdrop-blur-[1px]"></div>
       </div>
 
       {/* Login Form */}
