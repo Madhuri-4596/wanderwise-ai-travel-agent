@@ -1,9 +1,9 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import { users } from '@/app/api/auth/signup/route';
+import { users } from '@/lib/users';
 
-// Users are now managed in the signup route
+// Users are managed in a shared users file
 // This allows sharing the same user array across signup and login
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
