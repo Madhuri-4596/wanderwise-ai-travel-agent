@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, model } from '@/lib/openai';
+import { generateFlightAffiliateLink, addTrackingParams } from '@/lib/travelpayouts';
 
 const systemPrompt = `You are a specialized Flight Search Assistant for LUNO Travel Agent, your best trip budget bot.
 
@@ -14,7 +15,7 @@ Your response format:
    - Price in ₹ (Indian Rupees) or $ (if international)
    - Mark the CHEAPEST option clearly
    - Mark the BEST VALUE option (balance of price and convenience)
-3. For each flight, provide a booking link like: https://www.skyscanner.com/transport/flights/[origin]/[destination]/
+3. For each flight, include "📲 Book Now" text (the link will be added automatically)
 4. Be enthusiastic and helpful
 
 Example response:
@@ -28,7 +29,7 @@ Chennai (MAA) → Goa (GOI)
 Departure: 6:30 AM | Arrival: 8:15 AM
 Duration: 1h 45m (Direct)
 Price: ₹3,450
-Book now: https://www.skyscanner.com/transport/flights/maa/goi/
+📲 Book Now
 
 💎 BEST VALUE:
 Vistara UK-897
@@ -36,11 +37,58 @@ Chennai (MAA) → Goa (GOI)
 Departure: 10:00 AM | Arrival: 11:50 AM
 Duration: 1h 50m (Direct)
 Price: ₹4,200
-Book now: https://www.skyscanner.com/transport/flights/maa/goi/
+📲 Book Now
 
 [Continue with 2-3 more options...]"
 
-Use realistic airline names, flight numbers, times, and prices. Always provide Skyscanner booking links.`;
+Use realistic airline names, flight numbers, times, and prices.`;
+
+/**
+ * Extract flight route information from the AI response
+ */
+function extractFlightInfo(message: string): { origin: string; destination: string } | null {
+  // Try to extract from "Chennai (MAA) → Goa (GOI)" format
+  const routeMatch = message.match(/\(([A-Z]{3})\)\s*→\s*\(([A-Z]{3})\)/);
+  if (routeMatch) {
+    return { origin: routeMatch[1], destination: routeMatch[2] };
+  }
+
+  // Try to extract from "flights from Chennai to Goa" format
+  const fromToMatch = message.match(/from\s+([A-Za-z\s]+?)\s+to\s+([A-Za-z\s]+?)(?:\s|\.|\?|!|$)/i);
+  if (fromToMatch) {
+    return { origin: fromToMatch[1].trim(), destination: fromToMatch[2].trim() };
+  }
+
+  return null;
+}
+
+/**
+ * Add affiliate links to the AI response
+ */
+function addAffiliateLinks(message: string): string {
+  const flightInfo = extractFlightInfo(message);
+  if (!flightInfo) {
+    return message;
+  }
+
+  // Generate affiliate link
+  const today = new Date();
+  const departureDate = new Date(today);
+  departureDate.setDate(today.getDate() + 7); // Default to 7 days from now
+
+  const affiliateLink = generateFlightAffiliateLink({
+    origin: flightInfo.origin,
+    destination: flightInfo.destination,
+    departureDate: departureDate.toISOString().split('T')[0],
+    passengers: 1,
+  });
+
+  const trackedLink = addTrackingParams(affiliateLink, 'luno-flight-agent');
+
+  // Replace "📲 Book Now" with actual affiliate link
+  const linkMarkdown = `[📲 Book Now](${trackedLink})`;
+  return message.replace(/📲 Book Now/g, linkMarkdown);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -59,8 +107,11 @@ export async function POST(request: NextRequest) {
       max_tokens: 1500,
     });
 
-    const assistantMessage = completion.choices[0]?.message?.content ||
+    let assistantMessage = completion.choices[0]?.message?.content ||
       'Sorry, I encountered an error. Please try again.';
+
+    // Add affiliate links to the response
+    assistantMessage = addAffiliateLinks(assistantMessage);
 
     return NextResponse.json({ message: assistantMessage });
   } catch (error) {

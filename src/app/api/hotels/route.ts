@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, model } from '@/lib/openai';
+import { generateHotelAffiliateLink, addTrackingParams } from '@/lib/travelpayouts';
 
 const systemPrompt = `You are a specialized Hotel Booking Assistant for LUNO Travel Agent, your best trip budget bot.
 
@@ -16,7 +17,7 @@ Your response format:
    - Rating (out of 5)
    - Mark the 💰 CHEAPEST option
    - Mark the 🏆 BEST VALUE option
-3. Provide booking links like: https://www.booking.com/searchresults.html?ss=[city-name]
+3. Include "🏨 Book Now" text (the link will be added automatically)
 4. Be enthusiastic and helpful
 
 Example response:
@@ -31,7 +32,7 @@ Deluxe Room
 ₹2,500/night
 ✓ Free WiFi ✓ Pool ✓ Breakfast
 Rating: 4.2/5 ⭐
-Book: https://www.booking.com/searchresults.html?ss=Goa
+🏨 Book Now
 
 🏆 BEST VALUE:
 Paradise Beach Resort ⭐⭐⭐⭐
@@ -40,11 +41,61 @@ Sea View Room
 ₹4,800/night
 ✓ Beachfront ✓ Pool ✓ Spa ✓ Restaurant
 Rating: 4.7/5 ⭐
-Book: https://www.booking.com/searchresults.html?ss=Goa
+🏨 Book Now
 
 [Continue with 2-3 more options...]"
 
-Use realistic hotel names, prices, and ratings. Always provide booking links.`;
+Use realistic hotel names, prices, and ratings.`;
+
+/**
+ * Extract hotel destination from the AI response
+ */
+function extractHotelInfo(message: string): string | null {
+  // Try to extract from "hotels in Goa" format
+  const inMatch = message.match(/hotels?\s+in\s+([A-Za-z\s]+?)(?:\s|\.|\?|!|$)/i);
+  if (inMatch) {
+    return inMatch[1].trim();
+  }
+
+  // Try to extract from "Searching for hotels in Goa" format
+  const searchMatch = message.match(/Searching for hotels in\s+([A-Za-z\s]+?)(?:\.\.\.|\.|\?|!|$)/i);
+  if (searchMatch) {
+    return searchMatch[1].trim();
+  }
+
+  return null;
+}
+
+/**
+ * Add affiliate links to the AI response
+ */
+function addAffiliateLinks(message: string): string {
+  const cityName = extractHotelInfo(message);
+  if (!cityName) {
+    return message;
+  }
+
+  // Generate affiliate link with default dates (7 days from now, 3 nights)
+  const today = new Date();
+  const checkIn = new Date(today);
+  checkIn.setDate(today.getDate() + 7);
+  const checkOut = new Date(checkIn);
+  checkOut.setDate(checkIn.getDate() + 3);
+
+  const affiliateLink = generateHotelAffiliateLink({
+    cityName: cityName,
+    checkIn: checkIn.toISOString().split('T')[0],
+    checkOut: checkOut.toISOString().split('T')[0],
+    guests: 2,
+    rooms: 1,
+  });
+
+  const trackedLink = addTrackingParams(affiliateLink, 'luno-hotel-agent');
+
+  // Replace "🏨 Book Now" with actual affiliate link
+  const linkMarkdown = `[🏨 Book Now](${trackedLink})`;
+  return message.replace(/🏨 Book Now/g, linkMarkdown);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -63,8 +114,11 @@ export async function POST(request: NextRequest) {
       max_tokens: 1500,
     });
 
-    const assistantMessage = completion.choices[0]?.message?.content ||
+    let assistantMessage = completion.choices[0]?.message?.content ||
       'Sorry, I encountered an error. Please try again.';
+
+    // Add affiliate links to the response
+    assistantMessage = addAffiliateLinks(assistantMessage);
 
     return NextResponse.json({ message: assistantMessage });
   } catch (error) {
