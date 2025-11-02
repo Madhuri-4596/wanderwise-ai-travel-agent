@@ -8,7 +8,7 @@ const TRAVELPAYOUTS_API_TOKEN = process.env.TRAVELPAYOUTS_API_TOKEN || '';
 
 /**
  * Generate affiliate link for flight search
- * Uses Aviasales/Jetradar affiliate program
+ * Uses Travelpayouts redirect system for better tracking
  */
 export function generateFlightAffiliateLink(params: {
   origin: string;
@@ -19,22 +19,23 @@ export function generateFlightAffiliateLink(params: {
 }): string {
   const { origin, destination, departureDate, returnDate, passengers = 1 } = params;
 
-  const baseUrl = 'https://www.aviasales.com';
-  const searchParams = new URLSearchParams({
-    origin_iata: origin,
-    destination_iata: destination,
-    departure_at: departureDate,
-    ...(returnDate && { return_at: returnDate }),
-    adults: passengers.toString(),
+  // Use Travelpayouts redirect link for proper tracking
+  // Format: https://tp.media/r?marker=XXXXX&p=XXXXX&u=search_url
+  const searchUrl = `https://www.aviasales.com/search/${origin}${departureDate}${destination}${returnDate || departureDate}${passengers}`;
+
+  const redirectParams = new URLSearchParams({
     marker: TRAVELPAYOUTS_MARKER_ID,
+    trs: TRAVELPAYOUTS_MARKER_ID,
+    p: 'luno_flights',
+    u: searchUrl,
   });
 
-  return `${baseUrl}/search?${searchParams.toString()}`;
+  return `https://tp.media/r?${redirectParams.toString()}`;
 }
 
 /**
  * Generate affiliate link for hotel search
- * Uses Hotellook/Booking.com affiliate program
+ * Uses Travelpayouts redirect for Hotellook/Booking.com
  */
 export function generateHotelAffiliateLink(params: {
   cityName: string;
@@ -45,22 +46,22 @@ export function generateHotelAffiliateLink(params: {
 }): string {
   const { cityName, checkIn, checkOut, guests = 2, rooms = 1 } = params;
 
-  const baseUrl = 'https://search.hotellook.com';
-  const searchParams = new URLSearchParams({
-    city: cityName,
-    checkIn: checkIn,
-    checkOut: checkOut,
-    adultsCount: guests.toString(),
-    roomsCount: rooms.toString(),
+  // Use Hotellook widget redirect URL for better compatibility
+  const searchUrl = `https://www.hotellook.com/hotels/${cityName.toLowerCase().replace(/\s+/g, '-')}?checkIn=${checkIn}&checkOut=${checkOut}&adultsCount=${guests}&marker=${TRAVELPAYOUTS_MARKER_ID}`;
+
+  const redirectParams = new URLSearchParams({
     marker: TRAVELPAYOUTS_MARKER_ID,
+    trs: TRAVELPAYOUTS_MARKER_ID,
+    p: 'luno_hotels',
+    u: searchUrl,
   });
 
-  return `${baseUrl}?${searchParams.toString()}`;
+  return `https://tp.media/r?${redirectParams.toString()}`;
 }
 
 /**
  * Generate affiliate link for car rental/rides
- * Uses Economybookings affiliate program
+ * Uses Travelpayouts redirect for Economybookings
  */
 export function generateCarRentalAffiliateLink(params: {
   location: string;
@@ -69,15 +70,17 @@ export function generateCarRentalAffiliateLink(params: {
 }): string {
   const { location, pickupDate, dropoffDate } = params;
 
-  const baseUrl = 'https://www.economybookings.com';
-  const searchParams = new URLSearchParams({
-    location: location,
-    pickup: pickupDate,
-    dropoff: dropoffDate,
+  // Use Economybookings search URL
+  const searchUrl = `https://www.economybookings.com/search?location=${encodeURIComponent(location)}&pickup_date=${pickupDate}&dropoff_date=${dropoffDate}&marker=${TRAVELPAYOUTS_MARKER_ID}`;
+
+  const redirectParams = new URLSearchParams({
     marker: TRAVELPAYOUTS_MARKER_ID,
+    trs: TRAVELPAYOUTS_MARKER_ID,
+    p: 'luno_rides',
+    u: searchUrl,
   });
 
-  return `${baseUrl}?${searchParams.toString()}`;
+  return `https://tp.media/r?${redirectParams.toString()}`;
 }
 
 /**
