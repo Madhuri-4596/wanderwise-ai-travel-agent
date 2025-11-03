@@ -17,7 +17,7 @@ Your response format:
    - Mark the BEST VALUE option (balance of price and convenience)
 3. For each flight, include "📲 Book Now" text (the link will be added automatically)
 4. Be enthusiastic and helpful
-5. At the end, add: "✈️ Had a flight delay or cancellation? Claim up to €600 compensation! 💰 Check Flight Compensation"`
+5. At the end, add: "✈️ Had a flight delay or cancellation? Claim up to €600 compensation! 💰 Check Flight Compensation"
 
 Example response:
 "✈️ Searching for flights from Chennai to Goa...
