@@ -98,15 +98,14 @@ export function generateToursAffiliateLink(params: {
 
 /**
  * Generate AirHelp affiliate link for flight compensation claims
- * Uses AirHelp via Travelpayouts
+ * Uses AirHelp via Travelpayouts with proper redirect tracking
  */
 export function generateAirHelpAffiliateLink(params?: {
   flightNumber?: string;
   date?: string;
 }): string {
-  // Use AirHelp Travelpayouts short link
-  // This link is pre-configured with your affiliate ID
-  return 'https://airhelp.tpo.lu/EkozISKL';
+  // Use AirHelp Travelpayouts redirect link with campaign tracking
+  return 'https://tp.media/r?marker=681881&trs=470821&p=4197&u=https%3A%2F%2Fairhelp.com&campaign_id=120';
 }
 
 /**
