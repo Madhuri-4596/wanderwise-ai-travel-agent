@@ -8,7 +8,7 @@ const TRAVELPAYOUTS_API_TOKEN = process.env.TRAVELPAYOUTS_API_TOKEN || '';
 
 /**
  * Generate affiliate link for flight search
- * Uses Travelpayouts redirect system for better tracking
+ * Uses Aviasales with direct affiliate tracking
  */
 export function generateFlightAffiliateLink(params: {
   origin: string;
@@ -19,23 +19,25 @@ export function generateFlightAffiliateLink(params: {
 }): string {
   const { origin, destination, departureDate, returnDate, passengers = 1 } = params;
 
-  // Use Travelpayouts redirect link for proper tracking
-  // Format: https://tp.media/r?marker=XXXXX&p=XXXXX&u=search_url
-  const searchUrl = `https://www.aviasales.com/search/${origin}${departureDate}${destination}${returnDate || departureDate}${passengers}`;
+  // Format dates for Aviasales (DDMMYY format)
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}${month}${year}`;
+  };
 
-  const redirectParams = new URLSearchParams({
-    marker: TRAVELPAYOUTS_MARKER_ID,
-    trs: TRAVELPAYOUTS_MARKER_ID,
-    p: 'luno_flights',
-    u: searchUrl,
-  });
+  const formattedDeparture = formatDate(departureDate);
+  const formattedReturn = returnDate ? formatDate(returnDate) : formattedDeparture;
 
-  return `https://tp.media/r?${redirectParams.toString()}`;
+  // Aviasales direct search URL format with marker
+  return `https://www.aviasales.com/search/${origin}${formattedDeparture}${destination}${formattedReturn}${passengers}?marker=${TRAVELPAYOUTS_MARKER_ID}`;
 }
 
 /**
  * Generate affiliate link for hotel search
- * Uses Travelpayouts redirect for Hotellook/Booking.com
+ * Uses Hotellook with direct affiliate tracking
  */
 export function generateHotelAffiliateLink(params: {
   cityName: string;
@@ -46,22 +48,22 @@ export function generateHotelAffiliateLink(params: {
 }): string {
   const { cityName, checkIn, checkOut, guests = 2, rooms = 1 } = params;
 
-  // Use Hotellook widget redirect URL for better compatibility
-  const searchUrl = `https://www.hotellook.com/hotels/${cityName.toLowerCase().replace(/\s+/g, '-')}?checkIn=${checkIn}&checkOut=${checkOut}&adultsCount=${guests}&marker=${TRAVELPAYOUTS_MARKER_ID}`;
+  // Hotellook direct search URL format with marker
+  const citySlug = cityName.toLowerCase().replace(/\s+/g, '-');
 
-  const redirectParams = new URLSearchParams({
+  const searchParams = new URLSearchParams({
+    checkIn: checkIn,
+    checkOut: checkOut,
+    adultsCount: guests.toString(),
     marker: TRAVELPAYOUTS_MARKER_ID,
-    trs: TRAVELPAYOUTS_MARKER_ID,
-    p: 'luno_hotels',
-    u: searchUrl,
   });
 
-  return `https://tp.media/r?${redirectParams.toString()}`;
+  return `https://www.hotellook.com/cities/${citySlug}?${searchParams.toString()}`;
 }
 
 /**
  * Generate affiliate link for car rental/rides
- * Uses Travelpayouts redirect for Economybookings
+ * Uses Economybookings with direct affiliate tracking
  */
 export function generateCarRentalAffiliateLink(params: {
   location: string;
@@ -70,17 +72,15 @@ export function generateCarRentalAffiliateLink(params: {
 }): string {
   const { location, pickupDate, dropoffDate } = params;
 
-  // Use Economybookings search URL
-  const searchUrl = `https://www.economybookings.com/search?location=${encodeURIComponent(location)}&pickup_date=${pickupDate}&dropoff_date=${dropoffDate}&marker=${TRAVELPAYOUTS_MARKER_ID}`;
-
-  const redirectParams = new URLSearchParams({
-    marker: TRAVELPAYOUTS_MARKER_ID,
-    trs: TRAVELPAYOUTS_MARKER_ID,
-    p: 'luno_rides',
-    u: searchUrl,
+  // Economybookings direct search URL with affiliate parameters
+  const searchParams = new URLSearchParams({
+    location: location,
+    pickup_date: pickupDate,
+    dropoff_date: dropoffDate,
+    affiliate_id: TRAVELPAYOUTS_MARKER_ID,
   });
 
-  return `https://tp.media/r?${redirectParams.toString()}`;
+  return `https://www.economybookings.com/?${searchParams.toString()}`;
 }
 
 /**
