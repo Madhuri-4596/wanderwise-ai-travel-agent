@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, model } from '@/lib/openai';
-import { generateFlightAffiliateLink, addTrackingParams } from '@/lib/travelpayouts';
+import { generateFlightAffiliateLink, generateAirHelpAffiliateLink, addTrackingParams } from '@/lib/travelpayouts';
 
 const systemPrompt = `You are a specialized Flight Search Assistant for LUNO Travel Agent, your best trip budget bot.
 
@@ -17,6 +17,7 @@ Your response format:
    - Mark the BEST VALUE option (balance of price and convenience)
 3. For each flight, include "📲 Book Now" text (the link will be added automatically)
 4. Be enthusiastic and helpful
+5. At the end, add: "✈️ Had a flight delay or cancellation? Claim up to €600 compensation! 💰 Check Flight Compensation"`
 
 Example response:
 "✈️ Searching for flights from Chennai to Goa...
@@ -39,7 +40,10 @@ Duration: 1h 50m (Direct)
 Price: ₹4,200
 📲 Book Now
 
-[Continue with 2-3 more options...]"
+[Continue with 2-3 more options...]
+
+✈️ Had a flight delay or cancellation? Claim up to €600 compensation!
+💰 Check Flight Compensation"
 
 Use realistic airline names, flight numbers, times, and prices.`;
 
@@ -66,28 +70,36 @@ function extractFlightInfo(message: string): { origin: string; destination: stri
  * Add affiliate links to the AI response
  */
 function addAffiliateLinks(message: string): string {
+  let updatedMessage = message;
+
+  // Add flight booking links
   const flightInfo = extractFlightInfo(message);
-  if (!flightInfo) {
-    return message;
+  if (flightInfo) {
+    // Generate affiliate link
+    const today = new Date();
+    const departureDate = new Date(today);
+    departureDate.setDate(today.getDate() + 7); // Default to 7 days from now
+
+    const affiliateLink = generateFlightAffiliateLink({
+      origin: flightInfo.origin,
+      destination: flightInfo.destination,
+      departureDate: departureDate.toISOString().split('T')[0],
+      passengers: 1,
+    });
+
+    const trackedLink = addTrackingParams(affiliateLink, 'luno-flight-agent');
+
+    // Replace "📲 Book Now" with actual affiliate link
+    const linkMarkdown = `[📲 Book Now](${trackedLink})`;
+    updatedMessage = updatedMessage.replace(/📲 Book Now/g, linkMarkdown);
   }
 
-  // Generate affiliate link
-  const today = new Date();
-  const departureDate = new Date(today);
-  departureDate.setDate(today.getDate() + 7); // Default to 7 days from now
+  // Add AirHelp compensation link
+  const airHelpLink = generateAirHelpAffiliateLink();
+  const airHelpMarkdown = `[💰 Check Flight Compensation](${airHelpLink})`;
+  updatedMessage = updatedMessage.replace(/💰 Check Flight Compensation/g, airHelpMarkdown);
 
-  const affiliateLink = generateFlightAffiliateLink({
-    origin: flightInfo.origin,
-    destination: flightInfo.destination,
-    departureDate: departureDate.toISOString().split('T')[0],
-    passengers: 1,
-  });
-
-  const trackedLink = addTrackingParams(affiliateLink, 'luno-flight-agent');
-
-  // Replace "📲 Book Now" with actual affiliate link
-  const linkMarkdown = `[📲 Book Now](${trackedLink})`;
-  return message.replace(/📲 Book Now/g, linkMarkdown);
+  return updatedMessage;
 }
 
 export async function POST(request: NextRequest) {

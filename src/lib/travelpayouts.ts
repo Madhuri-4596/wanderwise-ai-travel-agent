@@ -85,36 +85,28 @@ export function generateCarRentalAffiliateLink(params: {
 
 /**
  * Generate affiliate link for nearby attractions/tours
- * Uses GetYourGuide affiliate program
+ * Uses Klook via Travelpayouts
  */
 export function generateToursAffiliateLink(params: {
   city: string;
   country?: string;
 }): string {
-  const { city, country } = params;
-
-  // GetYourGuide affiliate link format
-  const baseUrl = 'https://www.getyourguide.com';
-  const searchQuery = country ? `${city}-${country}` : city;
-
-  return `${baseUrl}/s/${searchQuery}?partner_id=${TRAVELPAYOUTS_MARKER_ID}`;
+  // Use Klook Travelpayouts short link
+  // This link is pre-configured with your affiliate ID
+  return 'https://klook.tpo.lu/jenOkdvH';
 }
 
 /**
  * Generate AirHelp affiliate link for flight compensation claims
+ * Uses AirHelp via Travelpayouts
  */
 export function generateAirHelpAffiliateLink(params?: {
   flightNumber?: string;
   date?: string;
 }): string {
-  const baseUrl = 'https://www.airhelp.com';
-  const searchParams = new URLSearchParams({
-    ref: TRAVELPAYOUTS_MARKER_ID,
-    ...(params?.flightNumber && { flight: params.flightNumber }),
-    ...(params?.date && { date: params.date }),
-  });
-
-  return `${baseUrl}?${searchParams.toString()}`;
+  // Use AirHelp Travelpayouts short link
+  // This link is pre-configured with your affiliate ID
+  return 'https://airhelp.tpo.lu/EkozISKL';
 }
 
 /**

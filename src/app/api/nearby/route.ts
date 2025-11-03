@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, model } from '@/lib/openai';
+import { generateToursAffiliateLink } from '@/lib/travelpayouts';
 
 const systemPrompt = `You are a specialized Local Attractions Assistant for LUNO Travel Agent, your best trip budget bot.
 
@@ -17,6 +18,7 @@ Your response format:
    - Google Maps link
 3. Mark 🌟 MUST-VISIT attractions
 4. Be enthusiastic and provide insider tips
+5. At the end, include "🎫 Book Tours & Activities" text (link will be added automatically)
 
 Example response:
 "📍 Searching for attractions near Calangute, Goa...
@@ -40,9 +42,20 @@ Rating: 4.8/5 ⭐
 Best time: Sunset dinner
 Location: https://maps.google.com/?q=Thalassa+Goa
 
-[Continue with 3-4 more attractions...]"
+[Continue with 3-4 more attractions...]
+
+🎫 Book Tours & Activities"
 
 Use realistic attraction names, distances, and details. Always provide Google Maps links.`;
+
+/**
+ * Add Klook affiliate link to the response
+ */
+function addKlookLink(message: string): string {
+  const klookLink = generateToursAffiliateLink({ city: '' });
+  const linkMarkdown = `[🎫 Book Tours & Activities](${klookLink})`;
+  return message.replace(/🎫 Book Tours & Activities/g, linkMarkdown);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,8 +74,11 @@ export async function POST(request: NextRequest) {
       max_tokens: 1500,
     });
 
-    const assistantMessage = completion.choices[0]?.message?.content ||
+    let assistantMessage = completion.choices[0]?.message?.content ||
       'Sorry, I encountered an error. Please try again.';
+
+    // Add Klook affiliate link
+    assistantMessage = addKlookLink(assistantMessage);
 
     return NextResponse.json({ message: assistantMessage });
   } catch (error) {

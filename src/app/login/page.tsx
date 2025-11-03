@@ -169,18 +169,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
-            <p className="text-xs text-white/70 text-center font-semibold mb-2">
-              Demo Credentials:
-            </p>
-            <p className="text-xs text-white/90 text-center font-mono">
-              Email: demo@luno.com
-              <br />
-              Password: password123
-            </p>
-          </div>
-
           {/* Signup Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-white/70">
